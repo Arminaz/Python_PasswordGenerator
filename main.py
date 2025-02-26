@@ -51,9 +51,12 @@ def save():
         return
 
     # Reading the existing data
-    with open(file="data.json", mode="r") as file:
-        data = json.load(file)
-        data.update(new_data)
+    try:
+        with open(file="data.json", mode="r") as file:
+            data = json.load(file)
+            data.update(new_data)
+    except FileNotFoundError:
+        data = new_data
     
     # Writing to the file
     with open(file="data.json", mode="w") as file:
