@@ -33,6 +33,22 @@ def generate_password():
     password_input.insert(0, password)
     pyperclip.copy(password)
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search():
+    search_website = website_input.get()
+    try:
+        with open(file="data.json", mode="r") as file:
+            data = json.load(file)
+            email = data[search_website]["email"]
+            password = data[search_website]["password"]
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message="No Data file found")
+    except KeyError as error_message:
+        messagebox.showerror(title="Error", message=f"No Website {error_message} found")
+    else:
+        messagebox.showinfo(title=f"{search_website}", message=f"Email: {email}\nPassword: {password}")
+    pass
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     # Getting inputs
@@ -89,31 +105,31 @@ email_user_label = Label(text="Email/Username:", bg="#ffffff")
 password_label = Label(text="Password:", bg="#ffffff")
 
 # # Inputs / Entry
-website_input = Entry(width=39)
-email_user_input = Entry(width=39)
+website_input = Entry(width=21)
+email_user_input = Entry(width=38)
 password_input = Entry(width=21)
 
 # # Buttons
-generate_password_button = Button(text="Generate Password", command=generate_password)
+search_button = Button(width=14, text="Search", command=search)
+generate_password_button = Button(width=14, text="Generate Password", command=generate_password)
 add_button = Button(width=36, text="Add", command=save)
 
 # # Grid Placement
 website_label.grid(column=1, row=2)
-website_input.grid(column=2, row=2, columnspan=2)
+website_input.grid(column=2, row=2)
 
 email_user_label.grid(column=1, row=3)
 email_user_input.grid(column=2, row=3, columnspan=2)
 
 password_label.grid(column=1, row=4)
 password_input.grid(column=2, row=4)
-generate_password_button.grid(column=3, row=4)
 
+search_button.grid(column=3, row=2)
+generate_password_button.grid(column=3, row=4)
 add_button.grid(column=2, row=5, columnspan=2)
 
 # # Config Options
 website_input.focus()
 email_user_input.insert(0, "email@example.com")
-
-
 
 window.mainloop()
